@@ -1,5 +1,6 @@
 {
   "name": "react_todo_list",
+  "homepage": "https://github.com/iwariku/react_todo_list",
   "private": true,
   "version": "0.0.0",
   "type": "module",
