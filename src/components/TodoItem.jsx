@@ -1,16 +1,21 @@
+import { useState } from 'react';
 import Button from './Button';
 import TodoForm from './TodoForm';
 
-const TodoItem = ({
-  todo,
-  isEditing, //今「このタスク」が編集モードかの判定結果を受けるため。
-  editText,
-  onToggle,
-  onDelete,
-  onStartEdit,
-  onSave,
-  onEditTextChange,
-}) => {
+const TodoItem = ({ todo, onToggle, onDelete, onSave }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(todo.text);
+
+  const handleSave = () => {
+    onSave(todo.id, editText); // propsからの関数を使う
+    setIsEditing(false);
+  };
+
+  const handleStartEdit = () => {
+    setEditText(todo.text);
+    setIsEditing(true);
+  };
+
   return (
     <li>
       {isEditing ? (
@@ -18,8 +23,8 @@ const TodoItem = ({
         <>
           <TodoForm
             value={editText}
-            onChange={onEditTextChange}
-            onSave={() => onSave(todo.id)}
+            onChange={setEditText}
+            onSave={handleSave}
             buttonText="保存"
           />
         </>
@@ -32,7 +37,7 @@ const TodoItem = ({
             onChange={() => onToggle(todo.id)}
           />
           <span>{todo.text}</span>
-          <Button onClick={() => onStartEdit(todo)}>編集</Button>
+          <Button onClick={handleStartEdit}>編集</Button>
           <Button onClick={() => onDelete(todo.id)}>削除</Button>
         </>
       )}
